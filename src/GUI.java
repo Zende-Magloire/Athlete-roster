@@ -3,15 +3,6 @@ import java.awt.*;
 
 public class GUI extends JFrame
 {
-    //search
-    private JPanel TopPanel;
-    private JPanel BottomPanel;
-    private JTextField LBL_name;
-    private JTextField LBL_ID;
-    private JButton BTN_Search;
-    private JButton BTN_N_Search;
-    private JSplitPane splitPane;
-
     public static void main (String[] args)
     {
         EventQueue.invokeLater(
@@ -41,10 +32,10 @@ public class GUI extends JFrame
 
         //search panel
         JPanel TopPanel = new JPanel();
-        LBL_name = new JTextField(10);
-        LBL_ID = new JTextField(10);
-        BTN_N_Search = new JButton("Search");
-        BTN_Search = new JButton("Search");
+        JTextField LBL_name = new JTextField(10);
+        JTextField LBL_ID = new JTextField(10);
+        JButton BTN_N_Search = new JButton("Search");
+        JButton BTN_Search = new JButton("Search");
         TopPanel.add(new JLabel("Search by name: "));
         TopPanel.add(LBL_name);
         TopPanel.add(BTN_N_Search);
@@ -53,8 +44,13 @@ public class GUI extends JFrame
         TopPanel.add(BTN_Search);
 //        BTN_N_Search.addActionListener(this);
 //        BTN_Search.addActionListener(this);
-
         add(TopPanel, BorderLayout.NORTH);
+
+        //add to roster
+        JPanel BottomPanel = new JPanel();
+        JButton BTN_Add = new JButton("Add new athlete");
+        BottomPanel.add(BTN_Add);
+        add(BottomPanel, BorderLayout.PAGE_END);
 
         //split pane
         JScrollPane pnlList = new JScrollPane();
