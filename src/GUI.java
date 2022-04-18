@@ -1,8 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
+import java.util.List;
 
 public class GUI extends JFrame
 {
+    public final String ATHLETE_DATA = "res\\database.csv";
+    List<Athlete> aAthletes  = new LinkedList<Athlete>();
+    private DefaultListModel<String> AthleteData;
+    //printStuff(aAthletes);
+
+    //Gui
+    private JList<String> mLSTAthletes;
+
     public static void main (String[] args)
     {
         EventQueue.invokeLater(
@@ -19,6 +31,9 @@ public class GUI extends JFrame
 
     public GUI()
     {
+        aAthletes = new LinkedList<>();
+        AthleteData = new DefaultListModel<>();
+        loadAthletes(ATHLETE_DATA);
         initGUI();
     }
 
@@ -46,18 +61,61 @@ public class GUI extends JFrame
 //        BTN_Search.addActionListener(this);
         add(TopPanel, BorderLayout.NORTH);
 
+        //list of athletes
+        mLSTAthletes = new JList<String>(AthleteData);
+        //mLSTAthletes.addListSelectionListener(this);
+
+        //split pane
+        JScrollPane pnlList = new JScrollPane();
+        pnlList.setLayout(new ScrollPaneLayout());
+        pnlList.setViewportView(mLSTAthletes);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlList, TopPanel);
+        splitPane.setDividerLocation(150);
+        add(splitPane, BorderLayout.CENTER);
+
         //add to roster
         JPanel BottomPanel = new JPanel();
         JButton BTN_Add = new JButton("Add new athlete");
         BottomPanel.add(BTN_Add);
         add(BottomPanel, BorderLayout.PAGE_END);
-
-        //split pane
-        JScrollPane pnlList = new JScrollPane();
-        pnlList.setLayout(new ScrollPaneLayout());
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlList, TopPanel);
-        splitPane.setDividerLocation(150);
-        add(splitPane, BorderLayout.CENTER);
      }
+
+    private void loadAthletes(String ATHLETE_DATA)
+    {
+        File file = new File("res/database.csv");
+        Scanner reader;
+
+        try
+        {
+            reader = new Scanner(file);
+        }
+        catch (FileNotFoundException e)
+        {
+            System.err.println("Could not find file: " + file.toPath());
+            return;
+        }
+
+        LinkedList<Athlete> aAthletes = new LinkedList<>();
+
+        reader.nextLine();
+        while (reader.hasNext())
+        {
+            String line = reader.nextLine();
+            StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+            String ID = String.valueOf(tokenizer.nextToken());
+            String FirstName = tokenizer.nextToken();
+            String LastName = tokenizer.nextToken();
+            int age = Integer.parseInt((tokenizer.nextToken()));
+            String race = String.valueOf(tokenizer.nextToken());
+            String PB = String.valueOf(tokenizer.nextToken());
+            String SB = String.valueOf(tokenizer.nextToken());
+
+            Athlete a = new Athlete(ID, FirstName, LastName, age, race, PB, SB);
+            aAthletes.add(a);
+        }
+
+     //   return aAthletes;
+    }
 }
 
