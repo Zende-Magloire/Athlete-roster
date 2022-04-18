@@ -63,6 +63,10 @@ public class GUI extends JFrame
 
         //list of athletes
         mLSTAthletes = new JList<String>(AthleteData);
+        mLSTAthletes.setModel(AthleteData);
+        mLSTAthletes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        mLSTAthletes.setLayoutOrientation(JList.VERTICAL);
+        mLSTAthletes.setVisibleRowCount(-1);
         //mLSTAthletes.addListSelectionListener(this);
 
         //split pane
