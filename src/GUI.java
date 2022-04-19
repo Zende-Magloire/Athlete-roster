@@ -190,7 +190,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     public void valueChanged(ListSelectionEvent e) {
         int idx = mLSTAthletes.getSelectedIndex();
 
-        if (!e.getValueIsAdjusting())
+        if (e.getValueIsAdjusting())
             return;
         if (idx < 0 || idx >= aAthletes.size())
             return;
