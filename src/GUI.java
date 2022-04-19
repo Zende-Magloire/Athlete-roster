@@ -8,7 +8,8 @@ import java.util.List;
 public class GUI extends JFrame
 {
     public final String ATHLETE_DATA = "res\\database.csv";
-    List<Athlete> aAthletes  = new LinkedList<Athlete>();
+
+    private List<Athlete> aAthletes;
     private DefaultListModel<String> AthleteData;
     //printStuff(aAthletes);
 
@@ -42,8 +43,6 @@ public class GUI extends JFrame
         setTitle("Stetson Striders Database");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
-        setLocationRelativeTo(null);
-        setVisible(true);
 
         //search panel
         JPanel TopPanel = new JPanel();
@@ -68,6 +67,7 @@ public class GUI extends JFrame
         mLSTAthletes.setLayoutOrientation(JList.VERTICAL);
         mLSTAthletes.setVisibleRowCount(-1);
         //mLSTAthletes.addListSelectionListener(this);
+        add(mLSTAthletes, BorderLayout.CENTER);
 
         //split pane
         JScrollPane pnlList = new JScrollPane();
@@ -77,11 +77,17 @@ public class GUI extends JFrame
         splitPane.setDividerLocation(150);
         add(splitPane, BorderLayout.CENTER);
 
+        //info panel
+
+
         //add to roster
         JPanel BottomPanel = new JPanel();
         JButton BTN_Add = new JButton("Add new athlete");
         BottomPanel.add(BTN_Add);
         add(BottomPanel, BorderLayout.PAGE_END);
+
+        setLocationRelativeTo(null);
+        setVisible(true);
      }
 
     private void loadAthletes(String ATHLETE_DATA)
@@ -92,34 +98,33 @@ public class GUI extends JFrame
         try
         {
             reader = new Scanner(file);
+
+            LinkedList<Athlete> aAthletes = new LinkedList<>();
+
+            reader.nextLine();
+            while (reader.hasNext()) {
+                String line = reader.nextLine();
+                StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+                String ID = String.valueOf(tokenizer.nextToken());
+                String FirstName = tokenizer.nextToken();
+                String LastName = tokenizer.nextToken();
+                int age = Integer.parseInt((tokenizer.nextToken()));
+                String race = String.valueOf(tokenizer.nextToken());
+                String PB = String.valueOf(tokenizer.nextToken());
+                String SB = String.valueOf(tokenizer.nextToken());
+
+                Athlete a = new Athlete(ID, FirstName, LastName, age, race, PB, SB);
+                aAthletes.add(a);
+                AthleteData.addElement(ID + ": " + FirstName + " " + LastName);
+            }
         }
-        catch (FileNotFoundException e)
+        catch (Exception ex)
         {
-            System.err.println("Could not find file: " + file.toPath());
-            return;
+            JOptionPane.showMessageDialog(this, "ERROR! Couldn't load student file.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Here is the error that occurred:");
+            System.out.println(ex);
         }
-
-        LinkedList<Athlete> aAthletes = new LinkedList<>();
-
-        reader.nextLine();
-        while (reader.hasNext())
-        {
-            String line = reader.nextLine();
-            StringTokenizer tokenizer = new StringTokenizer(line, ",");
-
-            String ID = String.valueOf(tokenizer.nextToken());
-            String FirstName = tokenizer.nextToken();
-            String LastName = tokenizer.nextToken();
-            int age = Integer.parseInt((tokenizer.nextToken()));
-            String race = String.valueOf(tokenizer.nextToken());
-            String PB = String.valueOf(tokenizer.nextToken());
-            String SB = String.valueOf(tokenizer.nextToken());
-
-            Athlete a = new Athlete(ID, FirstName, LastName, age, race, PB, SB);
-            aAthletes.add(a);
-        }
-
-     //   return aAthletes;
     }
 }
 
