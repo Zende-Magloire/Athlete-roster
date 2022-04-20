@@ -49,14 +49,13 @@ public class Athlete
 
     @Override
     public String toString() {
-        return "Athlete{" +
-                "ID=" + ID +
-                ", FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", age=" + age +
-                ", Race='" + Race + '\'' +
-                ", PB=" + PB +
-                ", SB=" + SB +
-                '}';
+        return
+                "ID: " + ID +
+                " FirstName: " + FirstName + "\n" +
+                " LastName: " + LastName + '\n' +
+                " Age: " + age + '\n' +
+                " Race: " + Race + '\n' +
+                " PB: " + PB + '\n' +
+                " SB: " + SB + '\n';
     }
 }

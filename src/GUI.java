@@ -55,7 +55,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         //search panel
         JPanel TopPanel = new JPanel();
         LBL_name = new JTextField(10);
-        LBL_ID = new JTextField(10);
+        LBL_ID = new JTextField(4);
         BTN_N_Search = new JButton("Search");
         BTN_Search = new JButton("Search");
         TopPanel.add(new JLabel("Search by first name: "));
@@ -66,7 +66,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         TopPanel.add(BTN_Search);
         BTN_N_Search.addActionListener(this);
         BTN_Search.addActionListener(this);
-        add(TopPanel, BorderLayout.PAGE_START);
+        add(TopPanel, BorderLayout.EAST);
 
         //list of athletes
         mLSTAthletes = new JList<String>(AthleteData);
@@ -86,18 +86,18 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         add(splitPane, BorderLayout.WEST);
 
         //info panel
-        JPanel infoPanel = new JPanel();
+       // JPanel infoPanel = new JPanel();
         mLBLAthleteInfo = new JLabel("Stetson Striders Athlete Database Search");
         mLBLAthleteInfo.setHorizontalAlignment(JLabel.CENTER);
-        infoPanel.add(mLBLAthleteInfo);
-        add(infoPanel, BorderLayout.EAST);
-       // add(mLBLAthleteInfo, BorderLayout.AFTER_LAST_LINE);
+      //  infoPanel.add(mLBLAthleteInfo);
+       // add(infoPanel, BorderLayout.AFTER_LAST_LINE);
+        add(mLBLAthleteInfo, BorderLayout.EAST);
 
         //add to roster
         JPanel BottomPanel = new JPanel();
         JButton BTN_Add = new JButton("Add new athlete");
         BottomPanel.add(BTN_Add);
-        add(BottomPanel, BorderLayout.PAGE_END);
+      //  add(BottomPanel, BorderLayout.PAGE_END);
 
         setLocationRelativeTo(null);
         setVisible(true);
@@ -156,7 +156,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 if (!MapAthlete.containsKey(id)) {
                     mLBLAthleteInfo.setOpaque(true);
                     mLBLAthleteInfo.setBackground(Color.RED);
-                    mLBLAthleteInfo.setText(id + " is not an ID number of any of our athletes! Please enter student's first name only.");
+                    mLBLAthleteInfo.setText(id + " is not an ID number of any of our athletes! Try again!");
                 }
                 else
                 {
@@ -165,6 +165,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                     athlete = MapAthlete.get(id);
                     mLBLAthleteInfo.setText(String.valueOf(athlete));
                 }
+                LBL_ID.setText("");
             }
             else if (button == BTN_N_Search) {
                 String name = LBL_name.getText();
@@ -174,7 +175,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 if (!MapAthlete_N.containsKey(Name)) {
                     mLBLAthleteInfo.setOpaque(true);
                     mLBLAthleteInfo.setBackground(Color.RED);
-                    mLBLAthleteInfo.setText(Name + " is not one of our athletes! Try again.");
+                    mLBLAthleteInfo.setText(Name + " is not one of our athletes! Please enter student's first name only..");
                 } else
                 {
                     mLBLAthleteInfo.setOpaque(true);
@@ -182,6 +183,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                     nAthlete = MapAthlete_N.get(Name);
                     mLBLAthleteInfo.setText(String.valueOf(nAthlete));
                 }
+                LBL_name.setText("");
             }
         }
     }
