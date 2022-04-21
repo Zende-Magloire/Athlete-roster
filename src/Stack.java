@@ -1,20 +1,28 @@
 import java.nio.BufferUnderflowException;
 
-public class Stack <E>
+public class Stack <Athlete>
 {
-    private class Node <E>
+
+    @Override
+    public String toString() {
+        return "Stack{" +
+                "mTop=" + mTop.data +
+                '}';
+    }
+
+    private class Node <Athlete>
     {
-        E data;
+        Athlete data;
         Node next;
 
-        public Node(E stuff)
+        public Node(Athlete stuff)
         {
             data = stuff;
             next = null;
         }
     }
 
-    private Node<E> mTop;
+    private Node<Athlete> mTop;
     private int Size;
 
     public Stack()
@@ -33,17 +41,17 @@ public class Stack <E>
         return Size;
     }
 
-    public E pop()
+    public Athlete pop()
     {
         if (isEmpty())
             throw new BufferUnderflowException();
-        E stuff = mTop.data;
-        mTop = mTop.next;
+            Athlete stuff = mTop.data;
+            mTop = mTop.next;
         Size--;
         return stuff;
     }
 
-    public void push(E example)
+    public void push(Athlete example)
     {
         Node n = new Node(example);
         n.next = mTop;
@@ -51,11 +59,23 @@ public class Stack <E>
         Size++;
     }
 
-    public E peek()
+    public Athlete peek()
     {
         if (isEmpty())
             throw new BufferUnderflowException();
             return mTop.data;
+    }
+
+    public static void main(String[] args) {
+        Stack test = new Stack();
+
+        test.push("hi");
+        test.push("ok");
+        test.push("try");
+
+        System.out.println(test);
+        System.out.println(test.peek());
+        System.out.println(test.pop());
     }
 }
 

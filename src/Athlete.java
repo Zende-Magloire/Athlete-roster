@@ -1,6 +1,6 @@
 public class Athlete
 {
-    private String ID ;
+    private int ID ;
     private String FirstName;
     private String LastName;
     private int age;
@@ -8,7 +8,7 @@ public class Athlete
     private String PB;
     private String SB;
 
-    public Athlete(String ID, String firstName, String lastName, int age, String race, String PB, String SB) {
+    public Athlete(int ID, String firstName, String lastName, int age, String race, String PB, String SB) {
         this.ID = ID;
         FirstName = firstName;
         LastName = lastName;
@@ -18,7 +18,7 @@ public class Athlete
         this.SB = SB;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
@@ -54,7 +54,7 @@ public class Athlete
                 " FirstName: " + FirstName + "\n" +
                 " LastName: " + LastName + '\n' +
                 " Age: " + age + '\n' +
-                " Race: " + Race + '\n' +
+                " Event: " + Race + '\n' +
                 " PB: " + PB + '\n' +
                 " SB: " + SB + '\n';
     }

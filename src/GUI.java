@@ -5,15 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.List;
 
 public class GUI extends JFrame implements ListSelectionListener, ActionListener {
     public final String ATHLETE_DATA = "res\\database.csv";
     private static Map<String, Athlete> MapAthlete = new HashMap<>();
     private static Map<String, Athlete> MapAthlete_N = new HashMap<>();
-    private ArrayList<Athlete> aAthletes;
+    private MyList<Athlete> aAthletes;
     private DefaultListModel<String> AthleteData;
 
     //GUI
@@ -23,6 +21,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     JButton BTN_Search;
     JButton BTN_N_Search;
     JTextField LBL_name;
+    JButton BTNreview;
 
     public static void main (String[] args)
     {
@@ -40,7 +39,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
     public GUI()
     {
-        aAthletes = new ArrayList<>();
+        aAthletes = new MyList<>();
         AthleteData = new DefaultListModel<>();
         loadAthletes(ATHLETE_DATA);
         initGUI();
@@ -86,12 +85,15 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         add(splitPane, BorderLayout.WEST);
 
         //info panel
-       // JPanel infoPanel = new JPanel();
+        JPanel infoPanel = new JPanel();
         mLBLAthleteInfo = new JLabel("Stetson Striders Athlete Database Search");
         mLBLAthleteInfo.setHorizontalAlignment(JLabel.CENTER);
-      //  infoPanel.add(mLBLAthleteInfo);
-       // add(infoPanel, BorderLayout.AFTER_LAST_LINE);
-        add(mLBLAthleteInfo, BorderLayout.EAST);
+        BTNreview = new JButton("Last viewed athlete");
+        BTNreview.addActionListener(this);
+        infoPanel.add(mLBLAthleteInfo);
+        infoPanel.add(BTNreview);
+        add(infoPanel, BorderLayout.AFTER_LAST_LINE);
+       // add(mLBLAthleteInfo, BorderLayout.EAST);
 
         //add to roster
         JPanel BottomPanel = new JPanel();
@@ -105,6 +107,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
     private void loadAthletes(String ATHLETE_DATA)
     {
+        //loading
         File file = new File("res/database.csv");
         Scanner reader;
 
@@ -112,14 +115,14 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         {
             reader = new Scanner(file);
 
-            ArrayList<Athlete> aAthletes = new ArrayList<>();
+            MyList<Athlete> aAthletes = new MyList<>();
 
             reader.nextLine();
             while (reader.hasNext()) {
                 String line = reader.nextLine();
                 StringTokenizer tokenizer = new StringTokenizer(line, ",");
 
-                String ID = String.valueOf(tokenizer.nextToken());
+                int ID = Integer.parseInt(tokenizer.nextToken());
                 String FirstName = tokenizer.nextToken();
                 String LastName = tokenizer.nextToken();
                 int age = Integer.parseInt((tokenizer.nextToken()));
@@ -127,12 +130,21 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 String PB = String.valueOf(tokenizer.nextToken());
                 String SB = String.valueOf(tokenizer.nextToken());
 
+                //adding
                 Athlete a = new Athlete(ID, FirstName, LastName, age, race, PB, SB);
-                aAthletes.add(a);
-                AthleteData.addElement(ID + ": " + FirstName + " " + LastName);
-                MapAthlete.put(a.getID(), a);
+                aAthletes.append(a);
+                MapAthlete.put(String.valueOf(a.getID()), a);
                 String firstname = a.getFirstName().toUpperCase(Locale.ROOT);
                 MapAthlete_N.put(firstname, a);
+                //sorting
+                insertionSort(aAthletes);
+                }
+            for (int i = 0; i < aAthletes.getSize(); i++)
+            {
+                Athlete ab = aAthletes.get(i);
+              //  System.out.println(ab);
+                String a = ab.getID() + ": " + ab.getFirstName() + " " + ab.getLastName();
+                AthleteData.addElement(a);
             }
         }
         catch (Exception ex)
@@ -141,9 +153,28 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         }
     }
 
+    public static void insertionSort(MyList<Athlete> data)
+        {
+        int n = data.getSize();
+        int numSorted = 1;
+        int index;
+        while (numSorted < n){
+            Athlete temp = data.get(numSorted);
+            for (index = numSorted; index > 0; index--){
+                if (temp.getID() < (data.get(index-1)).getID()){
+                    data.set(index, data.get(index-1));
+                } else {
+                    break;
+                }
+            }
+            data.set(index, temp);
+            numSorted++;
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Stack<Athlete> mStack = new Stack<>();
         Object source = e.getSource();
         if (source instanceof JButton) {
             JButton button = (JButton) source;
@@ -152,6 +183,8 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
                 String id = LBL_ID.getText();
                 Athlete athlete = MapAthlete.get(id);
+                mStack.push(athlete);
+                System.out.println(mStack);
 
                 if (!MapAthlete.containsKey(id)) {
                     mLBLAthleteInfo.setOpaque(true);
@@ -171,6 +204,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 String name = LBL_name.getText();
                 String Name = name.toUpperCase(Locale.ROOT);
                 Athlete nAthlete = MapAthlete_N.get(Name);
+                mStack.push(nAthlete);
 
                 if (!MapAthlete_N.containsKey(Name)) {
                     mLBLAthleteInfo.setOpaque(true);
@@ -185,6 +219,21 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 }
                 LBL_name.setText("");
             }
+            else if (button == BTNreview)
+            {
+               // if (!mStack.isEmpty())
+                //{
+                    System.out.println(mStack);
+                   // System.out.println(mStack.pop());
+                    //Athlete last = mStack.pop();
+                    //mLBLAthleteInfo.setText(String.valueOf(last));
+//                }
+//                else
+//                {
+//                    mLBLAthleteInfo.setBackground(Color.red);
+//                    mLBLAthleteInfo.setText("This is your first search!");
+//                }
+            }
         }
     }
 
@@ -194,13 +243,13 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
         if (e.getValueIsAdjusting())
             return;
-        if (idx < 0 || idx >= aAthletes.size())
+        if (idx < 0 || idx >= aAthletes.getSize())
             return;
+
         mLSTAthletes.ensureIndexIsVisible(idx);
 
-        System.out.println(aAthletes);
         Athlete a = aAthletes.get(idx);
-        mLBLAthleteInfo.setText("oop");
+        mLBLAthleteInfo.setText(String.valueOf(a));
     }
 }
 
