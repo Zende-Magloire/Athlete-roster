@@ -50,12 +50,12 @@ public class Athlete
     @Override
     public String toString() {
         return
-                "ID: " + ID +
-                " FirstName: " + FirstName + "\n" +
-                " LastName: " + LastName + '\n' +
-                " Age: " + age + '\n' +
-                " Event: " + Race + '\n' +
-                " PB: " + PB + '\n' +
-                " SB: " + SB + '\n';
+                "[ID: " + ID +
+                "] First name: " + FirstName + "\n" +
+                ", Last name: " + LastName + '\n' +
+                ", Age: " + age + '\n' +
+                ", Event: " + Race + '\n' +
+                ", PB: " + PB + '\n' +
+                ", SB: " + SB + '\n';
     }
 }
