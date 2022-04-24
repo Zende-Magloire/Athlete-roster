@@ -11,8 +11,10 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     public final String ATHLETE_DATA = "res\\database.csv";
     private static Map<String, Athlete> MapAthlete = new HashMap<>();
     private static Map<String, Athlete> MapAthlete_N = new HashMap<>();
+    Stack<Athlete> mStack;
     private MyList<Athlete> aAthletes;
     private DefaultListModel<String> AthleteData;
+    private DefaultListModel<Athlete> AthleteData2;
 
     //GUI
     private JList<String> mLSTAthletes;
@@ -47,6 +49,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
     private void initGUI()
     {
+        mStack= new Stack<>();
         setTitle("Stetson Striders Database");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
@@ -115,7 +118,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         {
             reader = new Scanner(file);
 
-            MyList<Athlete> aAthletes = new MyList<>();
+         aAthletes = new MyList<>();
 
             reader.nextLine();
             while (reader.hasNext()) {
@@ -174,7 +177,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Stack<Athlete> mStack = new Stack<>();
+
         Object source = e.getSource();
         if (source instanceof JButton) {
             JButton button = (JButton) source;
@@ -221,18 +224,18 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
             }
             else if (button == BTNreview)
             {
-               // if (!mStack.isEmpty())
-                //{
+                if (!mStack.isEmpty())
+                {
                     System.out.println(mStack);
-                   // System.out.println(mStack.pop());
-                    //Athlete last = mStack.pop();
-                    //mLBLAthleteInfo.setText(String.valueOf(last));
-//                }
-//                else
-//                {
-//                    mLBLAthleteInfo.setBackground(Color.red);
-//                    mLBLAthleteInfo.setText("This is your first search!");
-//                }
+                    System.out.println(mStack.peek());
+                    Athlete last = mStack.pop();
+                    mLBLAthleteInfo.setText(String.valueOf(last));
+                }
+                else
+                {
+                    mLBLAthleteInfo.setBackground(Color.red);
+                    mLBLAthleteInfo.setText("This is your first search!");
+                }
             }
         }
     }
@@ -241,15 +244,22 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     public void valueChanged(ListSelectionEvent e) {
         int idx = mLSTAthletes.getSelectedIndex();
 
-        if (e.getValueIsAdjusting())
-            return;
-        if (idx < 0 || idx >= aAthletes.getSize())
-            return;
+        System.out.println("hey" + idx);
+        String a = AthleteData.get(idx);
+        System.out.println(a);
+        System.out.println(aAthletes.get(idx));
 
-        mLSTAthletes.ensureIndexIsVisible(idx);
-
-        Athlete a = aAthletes.get(idx);
-        mLBLAthleteInfo.setText(String.valueOf(a));
+        mLBLAthleteInfo.setBackground(Color.YELLOW);
+        mLBLAthleteInfo.setText(String.valueOf(aAthletes.get(idx)));
+//        if (e.getValueIsAdjusting())
+//            return;
+//        if (idx < 0 || idx >= aAthletes.getSize())
+//            return;
+//
+//        mLSTAthletes.ensureIndexIsVisible(idx);
+//
+//        Athlete a = aAthletes.get(idx);
+//        mLBLAthleteInfo.setText(String.valueOf(a));
     }
 }
 
