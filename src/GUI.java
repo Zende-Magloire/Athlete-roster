@@ -9,12 +9,11 @@ import java.util.*;
 
 public class GUI extends JFrame implements ListSelectionListener, ActionListener {
     public final String ATHLETE_DATA = "res\\database.csv";
-    private static Map<String, Athlete> MapAthlete = new HashMap<>();
-    private static Map<String, Athlete> MapAthlete_N = new HashMap<>();
-    Stack<Athlete> mStack;
+    private static Map<String, Athlete> MapAthlete;
+    private static Map<String, Athlete> MapAthlete_N;
+    private Stack<Athlete> mStack;
     private MyList<Athlete> aAthletes;
     private DefaultListModel<String> AthleteData;
-    private DefaultListModel<Athlete> AthleteData2;
 
     //GUI
     private JList<String> mLSTAthletes;
@@ -118,7 +117,9 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         {
             reader = new Scanner(file);
 
-         aAthletes = new MyList<>();
+            aAthletes = new MyList<>();
+            MapAthlete = new HashMap<>();
+            MapAthlete_N = new HashMap<>();
 
             reader.nextLine();
             while (reader.hasNext()) {
@@ -145,7 +146,6 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
             for (int i = 0; i < aAthletes.getSize(); i++)
             {
                 Athlete ab = aAthletes.get(i);
-              //  System.out.println(ab);
                 String a = ab.getID() + ": " + ab.getFirstName() + " " + ab.getLastName();
                 AthleteData.addElement(a);
             }
@@ -226,8 +226,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
             {
                 if (!mStack.isEmpty())
                 {
-                    System.out.println(mStack);
-                    System.out.println(mStack.peek());
+                    Athlete ignore = mStack.pop();
                     Athlete last = mStack.pop();
                     mLBLAthleteInfo.setText(String.valueOf(last));
                 }
@@ -242,14 +241,12 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        int idx = mLSTAthletes.getSelectedIndex();
-
-        System.out.println("hey" + idx);
-        String a = AthleteData.get(idx);
-        System.out.println(a);
-        System.out.println(aAthletes.get(idx));
-
         mLBLAthleteInfo.setBackground(Color.YELLOW);
+
+        int idx = mLSTAthletes.getSelectedIndex();
+//        String a = AthleteData.get(idx);
+//        System.out.println(aAthletes.get(idx));
+
         mLBLAthleteInfo.setText(String.valueOf(aAthletes.get(idx)));
 //        if (e.getValueIsAdjusting())
 //            return;
