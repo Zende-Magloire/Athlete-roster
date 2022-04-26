@@ -8,11 +8,14 @@ import java.io.File;
 import java.util.*;
 
 public class GUI extends JFrame implements ListSelectionListener, ActionListener {
+
     public final String ATHLETE_DATA = "res\\database.csv";
+    public final String Officer_data = "res\\Officers.csv";
     private static Map<String, Athlete> MapAthlete;
     private static Map<String, Athlete> MapAthlete_N;
     private Stack<Athlete> mStack;
     private MyList<Athlete> aAthletes;
+    private MyList<Officers> club_officers;
     private DefaultListModel<String> AthleteData;
 
     //GUI
@@ -23,6 +26,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     JButton BTN_N_Search;
     JTextField LBL_name;
     JButton BTNreview;
+    JButton officers;
 
     public static void main (String[] args)
     {
@@ -43,6 +47,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         aAthletes = new MyList<>();
         AthleteData = new DefaultListModel<>();
         loadAthletes(ATHLETE_DATA);
+        loadOfficers(Officer_data);
         initGUI();
     }
 
@@ -95,16 +100,41 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         infoPanel.add(mLBLAthleteInfo);
         infoPanel.add(BTNreview);
         add(infoPanel, BorderLayout.AFTER_LAST_LINE);
-       // add(mLBLAthleteInfo, BorderLayout.EAST);
 
-        //add to roster
-        JPanel BottomPanel = new JPanel();
-        JButton BTN_Add = new JButton("Add new athlete");
-        BottomPanel.add(BTN_Add);
-      //  add(BottomPanel, BorderLayout.PAGE_END);
+        officers = new JButton("Club Officers");
+        add(officers, BorderLayout.CENTER);
+        officers.addActionListener(this);
 
         setLocationRelativeTo(null);
         setVisible(true);
+     }
+
+     private void loadOfficers(String Officer_data)
+     {
+         File file = new File("res/Officers.csv");
+         Scanner reader;
+
+         try {
+             reader = new Scanner(file);
+             club_officers = new MyList();
+
+             reader.nextLine();
+             while (reader.hasNext()) {
+                 String line = reader.nextLine();
+                 StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+                 String full_name = tokenizer.nextToken();
+                 String position = tokenizer.nextToken();
+                 Officers o = new Officers(full_name, position);
+              //   System.out.println(o);
+                 club_officers.append(o);
+               //  System.out.println(club_officers);
+             }
+         }
+               catch (Exception ex)
+             {
+                 JOptionPane.showMessageDialog(this, "ERROR! Couldn't load officer file.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
      }
 
     private void loadAthletes(String ATHLETE_DATA)
@@ -116,7 +146,6 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         try
         {
             reader = new Scanner(file);
-
             aAthletes = new MyList<>();
             MapAthlete = new HashMap<>();
             MapAthlete_N = new HashMap<>();
@@ -187,7 +216,6 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 String id = LBL_ID.getText();
                 Athlete athlete = MapAthlete.get(id);
                 mStack.push(athlete);
-                System.out.println(mStack);
 
                 if (!MapAthlete.containsKey(id)) {
                     mLBLAthleteInfo.setOpaque(true);
@@ -236,6 +264,14 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                     mLBLAthleteInfo.setText("This is your first search!");
                 }
             }
+            else if (button == officers)
+            {
+               for (int x=0; x< club_officers.getSize();x++)
+               {
+                  officers.setText(String.valueOf(club_officers.get(x)));
+               }
+            }
+
         }
     }
 
@@ -244,19 +280,9 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         mLBLAthleteInfo.setBackground(Color.YELLOW);
 
         int idx = mLSTAthletes.getSelectedIndex();
-//        String a = AthleteData.get(idx);
-//        System.out.println(aAthletes.get(idx));
 
         mLBLAthleteInfo.setText(String.valueOf(aAthletes.get(idx)));
-//        if (e.getValueIsAdjusting())
-//            return;
-//        if (idx < 0 || idx >= aAthletes.getSize())
-//            return;
-//
-//        mLSTAthletes.ensureIndexIsVisible(idx);
-//
-//        Athlete a = aAthletes.get(idx);
-//        mLBLAthleteInfo.setText(String.valueOf(a));
+
     }
 }
 
