@@ -13,11 +13,11 @@ public class Officers
     }
 
     public String getPosition() {
-        return position;
+        return "Club " + position;
     }
 
     @Override
     public String toString() {
-        return "Officers: " + full_name + ": " + position;
+        return  full_name + ": " + position;
     }
 }

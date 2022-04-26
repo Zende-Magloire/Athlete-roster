@@ -26,7 +26,6 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     JButton BTN_N_Search;
     JTextField LBL_name;
     JButton BTNreview;
-    JButton officers;
 
     public static void main (String[] args)
     {
@@ -101,10 +100,6 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         infoPanel.add(BTNreview);
         add(infoPanel, BorderLayout.AFTER_LAST_LINE);
 
-        officers = new JButton("Club Officers");
-        add(officers, BorderLayout.CENTER);
-        officers.addActionListener(this);
-
         setLocationRelativeTo(null);
         setVisible(true);
      }
@@ -117,6 +112,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
          try {
              reader = new Scanner(file);
              club_officers = new MyList();
+             AthleteData.addElement("Officers:");
 
              reader.nextLine();
              while (reader.hasNext()) {
@@ -126,9 +122,13 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                  String full_name = tokenizer.nextToken();
                  String position = tokenizer.nextToken();
                  Officers o = new Officers(full_name, position);
-              //   System.out.println(o);
                  club_officers.append(o);
-               //  System.out.println(club_officers);
+             }
+             for (int i = 0; i < club_officers.getSize(); i++)
+             {
+                 Officers ab = club_officers.get(i);
+                 String a = ab.toString();
+                 AthleteData.addElement(a);
              }
          }
                catch (Exception ex)
@@ -264,24 +264,18 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                     mLBLAthleteInfo.setText("This is your first search!");
                 }
             }
-            else if (button == officers)
-            {
-               for (int x=0; x< club_officers.getSize();x++)
-               {
-                  officers.setText(String.valueOf(club_officers.get(x)));
-               }
-            }
-
         }
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        mLBLAthleteInfo.setBackground(Color.YELLOW);
 
         int idx = mLSTAthletes.getSelectedIndex();
-
         mLBLAthleteInfo.setText(String.valueOf(aAthletes.get(idx)));
+
+
+      //  int idx2 = mLSTAthletes.getSelectedIndex();
+       // mLBLAthleteInfo.setText(String.valueOf(club_officers.get(idx).getPosition()));
 
     }
 }
