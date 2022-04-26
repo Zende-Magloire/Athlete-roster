@@ -272,11 +272,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
 
         int idx = mLSTAthletes.getSelectedIndex();
         mLBLAthleteInfo.setText(String.valueOf(aAthletes.get(idx)));
-
-
-      //  int idx2 = mLSTAthletes.getSelectedIndex();
-       // mLBLAthleteInfo.setText(String.valueOf(club_officers.get(idx).getPosition()));
-
+        
     }
 }
 
