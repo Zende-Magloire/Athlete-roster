@@ -74,7 +74,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
         add(TopPanel, BorderLayout.EAST);
 
         //list of athletes
-        mLSTAthletes = new JList<String>(AthleteData);
+        mLSTAthletes = new JList<>(AthleteData);
         mLSTAthletes.setModel(AthleteData);
         mLSTAthletes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         mLSTAthletes.setLayoutOrientation(JList.VERTICAL);
@@ -188,19 +188,19 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
     public static void insertionSort(MyList<Athlete> data)
         {
         int n = data.getSize();
-        int numSorted = 1;
-        int index;
-        while (numSorted < n){
-            Athlete temp = data.get(numSorted);
-            for (index = numSorted; index > 0; index--){
-                if (temp.getID() < (data.get(index-1)).getID()){
-                    data.set(index, data.get(index-1));
+        int Sorted = 1;
+        int idx;
+        while (Sorted < n){
+            Athlete temp = data.get(Sorted);
+            for (idx = Sorted; idx > 0; idx--){
+                if (temp.getID() < (data.get(idx-1)).getID()){
+                    data.set(idx, data.get(idx-1));
                 } else {
                     break;
                 }
             }
-            data.set(index, temp);
-            numSorted++;
+            data.set(idx, temp);
+            Sorted++;
         }
     }
 
@@ -231,6 +231,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 }
                 LBL_ID.setText("");
             }
+
             else if (button == BTN_N_Search) {
                 String name = LBL_name.getText();
                 String Name = name.toUpperCase(Locale.ROOT);
@@ -240,7 +241,7 @@ public class GUI extends JFrame implements ListSelectionListener, ActionListener
                 if (!MapAthlete_N.containsKey(Name)) {
                     mLBLAthleteInfo.setOpaque(true);
                     mLBLAthleteInfo.setBackground(Color.RED);
-                    mLBLAthleteInfo.setText(Name + " is not one of our athletes! Please enter student's first name only..");
+                    mLBLAthleteInfo.setText(name + " is not one of our athletes! Please enter the athlete's first name only.");
                 } else
                 {
                     mLBLAthleteInfo.setOpaque(true);
